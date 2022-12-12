@@ -7,7 +7,13 @@ const register = async (req, res) => {
     const { username, email, password, confirmPassword, name } = req.body;
 
     if (!username || !email || !password || !confirmPassword || !name) {
+      res.status(404)
       throw new Error("Please input all fields");
+    }
+
+    if (password !== confirmPassword) {
+      res.status(404)
+      throw new Error("Passwords do not match");
     }
 
     const text = "SELECT id FROM users WHERE email = $1";
@@ -15,7 +21,7 @@ const register = async (req, res) => {
     const existingUser = await pg.query(text, value);
 
     if (existingUser.rowCount > 0) {
-      res.status(401);
+      res.status(404);
       throw new Error("User exists");
     }
 
@@ -53,9 +59,9 @@ const login = async (req, res) => {
     const value = [email];
     const existingUser = await pg.query(text, value);
 
-    if (existingUser.rowCount < 0) {
+    if (existingUser.rowCount === 0) {
       res.status(401);
-      throw new Error("User exists");
+      throw new Error("Incorrect Credentials");
     }
 
     const isCorrectPassword = await bcrypt.compare(

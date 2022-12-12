@@ -1,10 +1,42 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "./register.scss";
-import axios from "axios";
 
 const Register = () => {
-  
+  const [inputs, setInputs] = useState({
+    username: "",
+    email: "",
+    name: "",
+    password: "",
+    confirmPassword: ""
+  });
+  const [err, setErr] = useState(null);
+
+  const handleChange = e => {
+    setErr(null);
+    setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }));
+  };
+
+  const handleRegister = async e => {
+    e.preventDefault();
+    try {
+      const response = await fetch("/api/auth/register", {
+        method: "POST",
+        body: JSON.stringify(inputs),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        //window.location.assign("/password_reset/sent")
+      } else throw new Error(data.error);
+    } catch (error) {
+      setErr(error.message);
+    }
+  };
 
   return (
     <div className="register">
@@ -23,33 +55,43 @@ const Register = () => {
         </div>
         <div className="right">
           <h1>Register</h1>
-          <form>
+          <form onSubmit={handleRegister}>
             <input
               type="text"
               placeholder="Username"
               name="username"
-              
-            />
-            <input
-              type="email"
-              placeholder="Email"
-              name="email"
-              
-            />
-            <input
-              type="password"
-              placeholder="Password"
-              name="password"
-              
+              onChange={handleChange}
             />
             <input
               type="text"
               placeholder="Name"
               name="name"
-              
+              onChange={handleChange}
             />
-          
-            <button >Register</button>
+            <input
+              type="email"
+              placeholder="Email"
+              name="email"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              placeholder="Password"
+              name="password"
+              onChange={handleChange}
+            />
+            <input
+              type="password"
+              placeholder="Confirm Password"
+              name="confirmPassword"
+              onChange={handleChange}
+            />
+            {err
+              ? <p>
+                  {err}
+                </p>
+              : false}
+            <button type="submit">Register</button>
           </form>
         </div>
       </div>

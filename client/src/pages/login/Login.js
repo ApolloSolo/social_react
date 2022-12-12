@@ -1,8 +1,29 @@
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 import "./login.scss";
 
 const Login = () => {
-  
+  const login = useContext(AuthContext)
+  const [inputs, setInputs] = useState({
+    email: "",
+    password: ""
+  });
+  const [err, setErr] = useState(null);
+
+  const handleChange = e => {
+    setErr(null);
+    setInputs(prev => ({ ...prev, [e.target.name]: e.target.value }));
+    console.log(inputs);
+  };
+
+  const handleLogin = async e => {
+    try {
+      await login(inputs)
+    } catch (error) {
+      setErr(error.message);
+    }
+  };
 
   return (
     <div className="login">
@@ -21,21 +42,26 @@ const Login = () => {
         </div>
         <div className="right">
           <h1>Login</h1>
-          <form>
+          <form onSubmit={handleLogin}>
             <input
-              type="text"
-              placeholder="Username"
-              name="username"
-              
+              onChange={handleChange}
+              type="email"
+              placeholder="email@domain.com"
+              name="email"
             />
             <input
+              onChange={handleChange}
               type="password"
               placeholder="Password"
               name="password"
-              
             />
-            
-            <button >Login</button>
+
+            {err
+              ? <p>
+                  {err}
+                </p>
+              : false}
+            <button type="submit">Login</button>
           </form>
         </div>
       </div>
@@ -44,3 +70,25 @@ const Login = () => {
 };
 
 export default Login;
+
+
+/* e.preventDefault();
+    try {
+      const response = await fetch("/api/auth/login", {
+        method: "POST",
+        body: JSON.stringify(inputs),
+        headers: {
+          "Content-Type": "application/json"
+        }
+      });
+
+      const data = await response.json();
+
+      console.log(data);
+
+      if (response.ok) {
+        window.location.assign("/");
+      } else throw new Error(data.error);
+    } catch (error) {
+      setErr(error.message);
+    } */
