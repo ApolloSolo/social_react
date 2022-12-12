@@ -1,10 +1,11 @@
 import { useContext, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/authContext";
 import "./login.scss";
 
 const Login = () => {
-  const login = useContext(AuthContext)
+  const navigate = useNavigate();
+  const { currentUser, login } = useContext(AuthContext);
   const [inputs, setInputs] = useState({
     email: "",
     password: ""
@@ -18,8 +19,10 @@ const Login = () => {
   };
 
   const handleLogin = async e => {
+    e.preventDefault();
     try {
-      await login(inputs)
+      await login(inputs);
+      navigate("/");
     } catch (error) {
       setErr(error.message);
     }
@@ -70,7 +73,6 @@ const Login = () => {
 };
 
 export default Login;
-
 
 /* e.preventDefault();
     try {

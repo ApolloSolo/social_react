@@ -60,7 +60,6 @@ const login = async (req, res) => {
     const existingUser = await pg.query(text, value);
 
     if (existingUser.rowCount === 0) {
-      res.status(401);
       throw new Error("Incorrect Credentials");
     }
 
@@ -70,7 +69,6 @@ const login = async (req, res) => {
     );
 
     if (!isCorrectPassword) {
-      res.status(400);
       throw new Error("Incorrect Credentials");
     }
 
