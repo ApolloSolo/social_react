@@ -8,21 +8,25 @@ export const AuthContextProvider = ({ children }) => {
     JSON.parse(localStorage.getItem("user")) || null
   );
 
-  const login = async (inputs) => {
+  const login = async inputs => {
     const res = await axios.post("/api/auth/login", inputs, {
-      withCredentials: true,
+      withCredentials: true
     });
 
-    if(res.data.error) {
-      throw new Error(res.data.error)
+    if (res.data.error) {
+      throw new Error(res.data.error);
     }
 
-    setCurrentUser(res.data)
+    console.log(res.data);
+    setCurrentUser(res.data);
   };
 
-  useEffect(() => {
-    localStorage.setItem("user", JSON.stringify(currentUser));
-  }, [currentUser]);
+  useEffect(
+    () => {
+      localStorage.setItem("user", JSON.stringify(currentUser));
+    },
+    [currentUser]
+  );
 
   return (
     <AuthContext.Provider value={{ currentUser, login }}>

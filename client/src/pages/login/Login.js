@@ -22,7 +22,7 @@ const Login = () => {
     e.preventDefault();
     try {
       await login(inputs);
-      navigate("/");
+      window.location.assign("/");
     } catch (error) {
       setErr(error.message);
     }

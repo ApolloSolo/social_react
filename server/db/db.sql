@@ -12,7 +12,7 @@ CREATE TABLE users(
     email VARCHAR(28) NOT NULL UNIQUE,
     passhash VARCHAR NOT NULL,
     name VARCHAR(45) NOT NULL,
-    cover_img VARCHAR(150),
+    cover_img TEXT,
     profile_img VARCHAR(150),
     city VARCHAR(45),
     website VARCHAR(45)

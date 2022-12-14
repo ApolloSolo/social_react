@@ -7,12 +7,12 @@ const register = async (req, res) => {
     const { username, email, password, confirmPassword, name } = req.body;
 
     if (!username || !email || !password || !confirmPassword || !name) {
-      res.status(404)
+      res.status(404);
       throw new Error("Please input all fields");
     }
 
     if (password !== confirmPassword) {
-      res.status(404)
+      res.status(404);
       throw new Error("Passwords do not match");
     }
 
@@ -55,9 +55,11 @@ const login = async (req, res) => {
     }
 
     const text =
-      "SELECT id, name, username, email, passhash FROM users WHERE email = $1";
+      "SELECT id, name, username, email, passhash, cover_img, profile_img FROM users WHERE email = $1";
     const value = [email];
     const existingUser = await pg.query(text, value);
+
+    console.log(existingUser.rows[0])
 
     if (existingUser.rowCount === 0) {
       throw new Error("Incorrect Credentials");
@@ -74,6 +76,8 @@ const login = async (req, res) => {
 
     const token = generateToken(existingUser.rows[0]);
 
+    console.log(token);
+
     res.cookie("accessToken", token, {
       httpOnly: true
     });
@@ -82,6 +86,8 @@ const login = async (req, res) => {
       username: existingUser.rows[0].username,
       name: existingUser.rows[0].name,
       email: existingUser.rows[0].email,
+      cover_img: existingUser.rows[0].cover_img,
+      profile_img: existingUser.rows[0].profile_img,
       token
     });
   } catch (error) {
@@ -92,11 +98,11 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
   try {
     res.clearCookie("accessToken", {
-        secure: true,
-        sameSite: "none"
-      });
-    
-      res.status(201).json({message: "Logged out"})
+      secure: true,
+      sameSite: "none"
+    });
+
+    res.status(201).json({ message: "Logged out" });
   } catch (error) {
     res.json({ error: error.message });
   }
