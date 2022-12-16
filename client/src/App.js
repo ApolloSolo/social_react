@@ -13,27 +13,32 @@ import Leftbar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
-import "./style.scss"
+import "./style.scss";
 import { useContext } from "react";
 import { DarkModeCOntext } from "./context/darkModeContext";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 
 function App() {
-  const {currentUser} = useContext(AuthContext)
-  const {darkMode} = useContext(DarkModeCOntext)
+  const { currentUser } = useContext(AuthContext);
+  const { darkMode } = useContext(DarkModeCOntext);
+
+  const queryClient = new QueryClient();
 
   const Layout = () => {
     return (
-      <div className={`theme-${darkMode ? "dark" : "light"}`}>
-        <Navbar />
-        <div style={{ display: "flex" }}>
-          <Leftbar />
-          <div style={{ flex: 6}}>
-          <Outlet />
+      <QueryClientProvider client={queryClient}>
+        <div className={`theme-${darkMode ? "dark" : "light"}`}>
+          <Navbar />
+          <div style={{ display: "flex" }}>
+            <Leftbar />
+            <div style={{ flex: 6 }}>
+              <Outlet />
+            </div>
+
+            <RightBar />
           </div>
-          
-          <RightBar />
         </div>
-      </div>
+      </QueryClientProvider>
     );
   };
 
