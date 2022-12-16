@@ -23,7 +23,7 @@ CREATE TABLE posts(
     description VARCHAR(300),
     img VARCHAR(300),
     user_id INT NOT NULL,
-    created_at DATE,
+    created_at VARCHAR(100),
     CONSTRAINT FK_user_post FOREIGN KEY(user_id)
         REFERENCES users(id) ON UPDATE CASCADE ON DELETE CASCADE
 );
