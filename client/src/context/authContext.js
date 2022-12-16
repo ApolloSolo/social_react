@@ -21,6 +21,18 @@ export const AuthContextProvider = ({ children }) => {
     setCurrentUser(res.data);
   };
 
+  const register = async inputs => {
+    const res = await axios.post("/api/auth/register", inputs, {
+      withCredentials: true
+    });
+
+    if (res.data.error) {
+      throw new Error(res.data.error);
+    }
+    console.log(res.data);
+    setCurrentUser(res.data);
+  };
+
   useEffect(
     () => {
       localStorage.setItem("user", JSON.stringify(currentUser));
@@ -29,7 +41,7 @@ export const AuthContextProvider = ({ children }) => {
   );
 
   return (
-    <AuthContext.Provider value={{ currentUser, login }}>
+    <AuthContext.Provider value={{ currentUser, login, register }}>
       {children}
     </AuthContext.Provider>
   );

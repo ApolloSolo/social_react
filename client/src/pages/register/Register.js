@@ -1,8 +1,10 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { Link } from "react-router-dom";
+import { AuthContext } from "../../context/authContext";
 import "./register.scss";
 
 const Register = () => {
+  const { register } = useContext(AuthContext);
   const [inputs, setInputs] = useState({
     username: "",
     email: "",
@@ -20,19 +22,8 @@ const Register = () => {
   const handleRegister = async e => {
     e.preventDefault();
     try {
-      const response = await fetch("/api/auth/register", {
-        method: "POST",
-        body: JSON.stringify(inputs),
-        headers: {
-          "Content-Type": "application/json"
-        }
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        //window.location.assign("/password_reset/sent")
-      } else throw new Error(data.error);
+      await register(inputs)
+      window.location.assign("/");
     } catch (error) {
       setErr(error.message);
     }
@@ -95,7 +86,7 @@ const Register = () => {
           </form>
         </div>
       </div>
-    </div>
+    </div> 
   );
 };
 
