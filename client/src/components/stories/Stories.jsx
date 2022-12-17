@@ -1,5 +1,6 @@
 import { useContext } from "react";
 import { AuthContext } from "../../context/authContext";
+import {Link} from 'react-router-dom'
 import "./stories.scss";
 
 const Stories = () => {
@@ -27,7 +28,7 @@ const Stories = () => {
         <div className="story">
           <img src={currentUser.cover_img} />
           <span>{currentUser.username}</span>
-          <button>+</button>
+          <Link to="/create_post"><button>+</button></Link>
         </div>
       {stories.map((story, index) => (
         <div key={index} className="story">

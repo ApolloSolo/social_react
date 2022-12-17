@@ -3,11 +3,47 @@ const pg = require("../db/connection");
 const getPosts = async (req, res) => {
   try {
     const posts = await pg.query(
-      "SELECT posts.*, users.id, users.username, users.name, users.profile_img FROM posts INNER JOIN users ON users.id = posts.user_id"
+      "SELECT posts.*, users.id AS user_id, users.username, users.name, users.profile_img FROM posts INNER JOIN users ON users.id = posts.user_id"
     );
-
-    console.log(posts.rows);
     res.json(posts.rows);
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
+
+const getAllUserPosts = async (req, res) => {
+  try {
+    const { user_id } = req.params;
+    const queryStr =
+      "SELECT posts.*, users.id AS user_id, users.username, users.name, users.profile_img FROM posts INNER JOIN users ON users.id = posts.user_id WHERE users.id = $1";
+    const values = [user_id];
+
+    const posts = await pg.query(queryStr, values);
+
+    if (posts.rowCount === 0) {
+      throw new Error("Post could not be found!");
+    }
+
+    res.json(posts.rows);
+  } catch (error) {
+    res.json({ error: error.message });
+  }
+};
+
+const getOnePostById = async (req, res) => {
+  try {
+    const { post_id } = req.params;
+    const queryStr =
+      "SELECT posts.*, users.id AS user_id, users.username, users.name, users.profile_img FROM posts INNER JOIN users ON users.id = posts.user_id WHERE posts.id = $1";
+    const values = [post_id];
+
+    const post = await pg.query(queryStr, values);
+
+    if (post.rowCount === 0) {
+      throw new Error("Post could not be found!");
+    }
+
+    res.json(post.rows[0]);
   } catch (error) {
     res.json({ error: error.message });
   }
@@ -30,8 +66,8 @@ const createPost = async (req, res) => {
 
 const editPost = async (req, res) => {
   try {
-    const { post_id } = req.params;
-    const { description, img, user_id } = req.body;
+    const { post_id, user_id } = req.params;
+    const { description, img } = req.body;
     const queryString =
       "UPDATE posts SET description = $1, img = $2 WHERE id = $3 AND user_id = $4  RETURNING *";
     const values = [description, img, post_id, user_id];
@@ -62,4 +98,11 @@ const deletePost = async (req, res) => {
   }
 };
 
-module.exports = { getPosts, createPost, editPost, deletePost };
+module.exports = {
+  getPosts,
+  createPost,
+  editPost,
+  deletePost,
+  getOnePostById,
+  getAllUserPosts
+};

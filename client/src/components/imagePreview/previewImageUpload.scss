@@ -1,0 +1,14 @@
+@import "../../style.scss";
+
+.previewImage{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+        width: auto;
+        max-height: 250px;
+        border-radius: .5rem;
+        margin-top: 20px;
+      }
+}

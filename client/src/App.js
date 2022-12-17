@@ -13,6 +13,7 @@ import Leftbar from "./components/leftBar/LeftBar";
 import RightBar from "./components/rightBar/RightBar";
 import Home from "./pages/home/Home";
 import Profile from "./pages/profile/Profile";
+import CreatePost from "./pages/createPost/CreatePost";
 import "./style.scss";
 import { useContext } from "react";
 import { DarkModeCOntext } from "./context/darkModeContext";
@@ -54,7 +55,7 @@ function App() {
       path: "/",
       element: (
         <ProtectedRoute>
-          <Layout />
+          <Layout style/>
         </ProtectedRoute>
       ),
       children: [
@@ -65,6 +66,10 @@ function App() {
         {
           path: "/profile/:id",
           element: <Profile />
+        },
+        {
+          path: "/create_post",
+          element: <CreatePost />
         }
       ]
     },

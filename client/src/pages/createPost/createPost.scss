@@ -1,0 +1,104 @@
+@import "../../style.scss";
+
+.outer-container {
+  height: 100%;
+  padding-left: 1rem;
+  padding-top: 1rem;
+  @include themify($themes) {
+    background-color: themed("bgSoft");
+    color: themed("textColor");
+
+    .upload-container {
+      background-color: themed("bg");
+      color: themed("textColor");
+      padding: 1rem;
+      min-height: 200px;
+
+      h2 {
+        padding: 0;
+        margin: 0 0 1rem 0;
+        text-align: center;
+      }
+
+      form {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        input {
+          background-color: rgb(196, 196, 196);
+          color: black;
+          margin-right: 0.75rem;
+          border-radius: 0.25rem;
+        }
+
+        .selected {
+            background-image: linear-gradient(#0dea62, #0dea4f);
+            border: 0;
+            border-radius: 4px;
+            box-shadow: rgba(0, 0, 0, 0.3) 0 5px 15px;
+            box-sizing: border-box;
+            color: #fff;
+            cursor: pointer;
+            font-family: Montserrat, sans-serif;
+            font-size: 0.9em;
+            margin: 5px;
+            padding: 10px 15px;
+            text-align: center;
+            user-select: none;
+            -webkit-user-select: none;
+            touch-action: manipulation;
+        }
+        .selected:hover {
+          background-color: rgb(98, 247, 143);
+        }
+        .not-selected {
+          border: 1px solid rgb(137, 143, 141);
+          padding: 0.5rem;
+          background-color: rgb(137, 143, 141);
+          border-radius: 0.125rem;
+          font-weight: bold;
+        }
+      }
+    }
+    .post-container {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      margin-top: 1rem;
+      background-color: themed("bg");
+      color: themed("textColor");
+      padding: 1rem;
+      h2 {
+        padding: 0;
+        margin: 0 0 1rem 0;
+        text-align: center;
+      }
+      .description {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+      }
+
+      button {
+        background-image: linear-gradient(#0dccea, #0d70ea);
+        border: 0;
+        border-radius: 4px;
+        box-shadow: rgba(0, 0, 0, 0.3) 0 5px 15px;
+        box-sizing: border-box;
+        color: #fff;
+        cursor: pointer;
+        font-family: Montserrat, sans-serif;
+        font-size: 0.9em;
+        margin: 5px;
+        padding: 10px 15px;
+        text-align: center;
+        user-select: none;
+        -webkit-user-select: none;
+        touch-action: manipulation;
+      }
+    }
+  }
+}
